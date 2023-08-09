@@ -1,5 +1,6 @@
+
 import 'package:core/core.dart';
-import 'package:core/src/data_sources/interfaces/contacts.dart';
+
 
 class ContactsRepository {
   final ContactsLocalDataSource contactsLocalDataSource;

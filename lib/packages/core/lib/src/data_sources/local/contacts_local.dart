@@ -1,6 +1,4 @@
-import 'package:core/src/data_sources/interfaces/contacts.dart';
-import 'package:core/src/data_sources/interfaces/local_db.dart';
-import 'package:core/src/models/common/common.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 
 class ContactsLocalDataSourceImpl implements ContactsLocalDataSource {

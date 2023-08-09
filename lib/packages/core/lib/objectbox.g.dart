@@ -20,59 +20,58 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 8221469878817580930),
+      id: const IdUid(1, 5136566873840295577),
       name: 'ContactModel',
-      lastPropertyId: const IdUid(10, 4595375797297476570),
+      lastPropertyId: const IdUid(10, 6361827254636373079),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 7427449571724519060),
+            id: const IdUid(1, 1163251642577535205),
             name: 'idKey',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 3759424792526306703),
-            name: 'contactID',
-            type: 9,
-            flags: 2080,
-            indexId: const IdUid(1, 8460888384125029248)),
-        ModelProperty(
-            id: const IdUid(3, 871513587292766656),
+            id: const IdUid(2, 7351150448232480188),
             name: 'firstName',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 7317964790738410144),
+            id: const IdUid(3, 59360502092026381),
             name: 'lastName',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 8605916730590511158),
+            id: const IdUid(4, 5963087489550259611),
+            name: 'company',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 4391623470357394464),
             name: 'phoneNumber',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 2894395833372308116),
+            id: const IdUid(6, 3287708238875265221),
             name: 'streetAddress1',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 2315823068014790534),
+            id: const IdUid(7, 3170550425526613710),
             name: 'streetAddress2',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 5252560268850954368),
+            id: const IdUid(8, 3410163295789585048),
             name: 'city',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(9, 4792493349233974082),
+            id: const IdUid(9, 7792780136736120130),
             name: 'state',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(10, 4595375797297476570),
+            id: const IdUid(10, 6361827254636373079),
             name: 'zipCode',
             type: 9,
             flags: 0)
@@ -81,13 +80,7 @@ final _entities = <ModelEntity>[
       backlinks: <ModelBacklink>[])
 ];
 
-/// Shortcut for [Store.new] that passes [getObjectBoxModel] and for Flutter
-/// apps by default a [directory] using `defaultStoreDirectory()` from the
-/// ObjectBox Flutter library.
-///
-/// Note: for desktop apps it is recommended to specify a unique [directory].
-///
-/// See [Store.new] for an explanation of all parameters.
+/// Open an ObjectBox store with the model declared in this file.
 Future<Store> openStore(
         {String? directory,
         int? maxDBSizeInKB,
@@ -103,13 +96,12 @@ Future<Store> openStore(
         queriesCaseSensitiveDefault: queriesCaseSensitiveDefault,
         macosApplicationGroup: macosApplicationGroup);
 
-/// Returns the ObjectBox model definition for this project for use with
-/// [Store.new].
+/// ObjectBox model definition, pass it to [Store] - Store(getObjectBoxModel())
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 8221469878817580930),
-      lastIndexId: const IdUid(1, 8460888384125029248),
+      lastEntityId: const IdUid(1, 5136566873840295577),
+      lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
@@ -130,9 +122,9 @@ ModelDefinition getObjectBoxModel() {
           object.idKey = id;
         },
         objectToFB: (ContactModel object, fb.Builder fbb) {
-          final contactIDOffset = fbb.writeString(object.contactID);
           final firstNameOffset = fbb.writeString(object.firstName);
           final lastNameOffset = fbb.writeString(object.lastName);
+          final companyOffset = fbb.writeString(object.company);
           final phoneNumberOffset = fbb.writeString(object.phoneNumber);
           final streetAddress1Offset = fbb.writeString(object.streetAddress1);
           final streetAddress2Offset = fbb.writeString(object.streetAddress2);
@@ -141,9 +133,9 @@ ModelDefinition getObjectBoxModel() {
           final zipCodeOffset = fbb.writeString(object.zipCode);
           fbb.startTable(11);
           fbb.addInt64(0, object.idKey);
-          fbb.addOffset(1, contactIDOffset);
-          fbb.addOffset(2, firstNameOffset);
-          fbb.addOffset(3, lastNameOffset);
+          fbb.addOffset(1, firstNameOffset);
+          fbb.addOffset(2, lastNameOffset);
+          fbb.addOffset(3, companyOffset);
           fbb.addOffset(4, phoneNumberOffset);
           fbb.addOffset(5, streetAddress1Offset);
           fbb.addOffset(6, streetAddress2Offset);
@@ -156,40 +148,26 @@ ModelDefinition getObjectBoxModel() {
         objectFromFB: (Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-          final idKeyParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final contactIDParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 6, '');
-          final firstNameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 8, '');
-          final lastNameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 10, '');
-          final phoneNumberParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 12, '');
-          final streetAddress1Param =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 14, '');
-          final streetAddress2Param =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 16, '');
-          final cityParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 18, '');
-          final stateParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 20, '');
-          final zipCodeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 22, '');
+
           final object = ContactModel(
-              idKey: idKeyParam,
-              contactID: contactIDParam,
-              firstName: firstNameParam,
-              lastName: lastNameParam,
-              phoneNumber: phoneNumberParam,
-              streetAddress1: streetAddress1Param,
-              streetAddress2: streetAddress2Param,
-              city: cityParam,
-              state: stateParam,
-              zipCode: zipCodeParam);
+              idKey: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              firstName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              lastName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              company: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              phoneNumber: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              streetAddress1: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
+              streetAddress2: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''),
+              city: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''),
+              state:
+                  const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 20, ''),
+              zipCode: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 22, ''));
 
           return object;
         })
@@ -204,16 +182,16 @@ class ContactModel_ {
   static final idKey =
       QueryIntegerProperty<ContactModel>(_entities[0].properties[0]);
 
-  /// see [ContactModel.contactID]
-  static final contactID =
-      QueryStringProperty<ContactModel>(_entities[0].properties[1]);
-
   /// see [ContactModel.firstName]
   static final firstName =
-      QueryStringProperty<ContactModel>(_entities[0].properties[2]);
+      QueryStringProperty<ContactModel>(_entities[0].properties[1]);
 
   /// see [ContactModel.lastName]
   static final lastName =
+      QueryStringProperty<ContactModel>(_entities[0].properties[2]);
+
+  /// see [ContactModel.company]
+  static final company =
       QueryStringProperty<ContactModel>(_entities[0].properties[3]);
 
   /// see [ContactModel.phoneNumber]

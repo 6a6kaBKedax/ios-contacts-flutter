@@ -4,60 +4,58 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:8221469878817580930",
-      "lastPropertyId": "10:4595375797297476570",
+      "id": "1:5136566873840295577",
+      "lastPropertyId": "10:6361827254636373079",
       "name": "ContactModel",
       "properties": [
         {
-          "id": "1:7427449571724519060",
+          "id": "1:1163251642577535205",
           "name": "idKey",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:3759424792526306703",
-          "name": "contactID",
-          "type": 9,
-          "flags": 2080,
-          "indexId": "1:8460888384125029248"
-        },
-        {
-          "id": "3:871513587292766656",
+          "id": "2:7351150448232480188",
           "name": "firstName",
           "type": 9
         },
         {
-          "id": "4:7317964790738410144",
+          "id": "3:59360502092026381",
           "name": "lastName",
           "type": 9
         },
         {
-          "id": "5:8605916730590511158",
+          "id": "4:5963087489550259611",
+          "name": "company",
+          "type": 9
+        },
+        {
+          "id": "5:4391623470357394464",
           "name": "phoneNumber",
           "type": 9
         },
         {
-          "id": "6:2894395833372308116",
+          "id": "6:3287708238875265221",
           "name": "streetAddress1",
           "type": 9
         },
         {
-          "id": "7:2315823068014790534",
+          "id": "7:3170550425526613710",
           "name": "streetAddress2",
           "type": 9
         },
         {
-          "id": "8:5252560268850954368",
+          "id": "8:3410163295789585048",
           "name": "city",
           "type": 9
         },
         {
-          "id": "9:4792493349233974082",
+          "id": "9:7792780136736120130",
           "name": "state",
           "type": 9
         },
         {
-          "id": "10:4595375797297476570",
+          "id": "10:6361827254636373079",
           "name": "zipCode",
           "type": 9
         }
@@ -65,8 +63,8 @@
       "relations": []
     }
   ],
-  "lastEntityId": "1:8221469878817580930",
-  "lastIndexId": "1:8460888384125029248",
+  "lastEntityId": "1:5136566873840295577",
+  "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
