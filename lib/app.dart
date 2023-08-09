@@ -1,4 +1,4 @@
-import 'package:contacts_app/ui/screens/contacts_list.dart';
+import 'package:contacts_app/ui/di/navigation.dart';
 import 'package:core/core.dart';
 import 'package:contacts_app/ui/screens/models/contacts_cubit.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,10 +18,10 @@ class App extends StatelessWidget {
           contactsLocalDataSource: ContactsLocalDataSourceImpl(dataSource),
         ),
       )..init(),
-      child: MaterialApp(
-        home: ContactListScreen(),
+      child: CupertinoApp.router(
+        routerConfig: router,
         debugShowCheckedModeBanner: false,
-        //theme: const CupertinoThemeData(brightness: Brightness.light),
+        theme: const CupertinoThemeData(brightness: Brightness.light),
       ),
     );
   }

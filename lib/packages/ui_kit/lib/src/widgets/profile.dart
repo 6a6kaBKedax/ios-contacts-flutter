@@ -3,12 +3,16 @@ import 'package:flutter/cupertino.dart';
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({
     super.key,
-    required this.name,
-    required this.surname,
+    this.name,
+    this.surname,
+    this.nameString,
+    this.surnameString,
   });
 
-  final TextEditingController name;
-  final TextEditingController surname;
+  final TextEditingController? name;
+  final TextEditingController? surname;
+  final String? nameString;
+  final String? surnameString;
 
   @override
   State<ProfileWidget> createState() => _ProfileWidgetState();
@@ -17,13 +21,27 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   void initState() {
-    widget.name.addListener(() => setState(() {
-          nameVal = widget.name.value.text;
-        }));
-    widget.surname.addListener(() => setState(() {
-          surnameVal = widget.surname.value.text;
-        }));
+    if (widget.name != null && widget.surname != null) {
+      widget.name!.addListener(() => setState(() {
+            nameVal = widget.name!.value.text;
+          }));
+      widget.surname!.addListener(() => setState(() {
+            surnameVal = widget.surname!.value.text;
+          }));
+    } else if (widget.nameString != null && widget.surnameString != null) {
+      nameVal = widget.nameString!;
+      surnameVal = widget.surnameString!;
+    }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (widget.name != null && widget.surname != null) {
+      widget.name!.dispose();
+      widget.surname!.dispose();
+    }
+    super.dispose();
   }
 
   String nameVal = '';
@@ -32,8 +50,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 150,
-      height: 150,
+      width: 150.0,
+      height: 150.0,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(

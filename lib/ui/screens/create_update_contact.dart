@@ -1,8 +1,11 @@
 import 'package:contacts_app/packages/ui_kit/lib/ui_kit.dart';
+import 'package:contacts_app/ui/di/navigation.dart';
+import 'package:contacts_app/ui/screens/models/contacts_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../packages/core/lib/core.dart';
+import 'package:core/core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateUpdateContactScreen extends StatefulWidget {
   const CreateUpdateContactScreen({
@@ -35,8 +38,6 @@ class _CreateUpdateContactScreenState extends State<CreateUpdateContactScreen> {
 
   @override
   void dispose() {
-    nameController.dispose();
-    lastNameController.dispose();
     companyController.dispose();
     streetAddress1.dispose();
     streetAddress2.dispose();
@@ -63,11 +64,16 @@ class _CreateUpdateContactScreenState extends State<CreateUpdateContactScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        heroTag: '',
         leading: Align(
           alignment: Alignment.centerLeft,
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              if (widget.contactModel != null) {
+                context.go(Routes.detail, extra: widget.contactModel);
+              } else {
+                context.go(Routes.init);
+              }
+            },
             child: Text(
               'Back',
               style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
@@ -91,9 +97,19 @@ class _CreateUpdateContactScreenState extends State<CreateUpdateContactScreen> {
                 zipCode: zipCode.value.text,
               );
             },
-            child: Text(
-              'Done',
-              style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+            child: GestureDetector(
+              onTap: () async {
+                await context.read<ContactsCubit>().crud(
+                      actionType:
+                          widget.contactModel != null ? ContactsCubitActionEnum.update : ContactsCubitActionEnum.create,
+                      value: _getContact,
+                    );
+                context.go(Routes.init);
+              },
+              child: Text(
+                'Done',
+                style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+              ),
             ),
           ),
         ),
@@ -152,6 +168,25 @@ class _CreateUpdateContactScreenState extends State<CreateUpdateContactScreen> {
                   addTitle: 'add address',
                 ),
                 const SizedBox(height: 30.0),
+                if (widget.contactModel != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30.0),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await context.read<ContactsCubit>().crud(
+                          actionType: ContactsCubitActionEnum.delete,
+                          ids: [widget.contactModel!.idKey],
+                        );
+                        context.go(Routes.init);
+                      },
+                      child: Text(
+                        'Delete',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: CupertinoColors.destructiveRed,
+                            ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -159,4 +194,17 @@ class _CreateUpdateContactScreenState extends State<CreateUpdateContactScreen> {
       ),
     );
   }
+
+  ContactModel get _getContact => ContactModel(
+        idKey: widget.contactModel?.idKey ?? 0,
+        firstName: nameController.value.text == '' ? 'empty name' : nameController.value.text,
+        lastName: lastNameController.value.text == '' ? 'empty last name' : lastNameController.value.text,
+        company: companyController.value.text,
+        phoneNumber: phoneController.value.text == '' ? '123456678' : phoneController.value.text,
+        streetAddress1: streetAddress1.value.text,
+        streetAddress2: streetAddress2.value.text,
+        city: city.value.text,
+        state: state.value.text,
+        zipCode: zipCode.value.text,
+      );
 }

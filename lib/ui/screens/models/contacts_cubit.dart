@@ -25,12 +25,15 @@ class ContactsCubit extends Cubit<ContactsState> {
     try {
       emit(state.copyWith(enumState: ContactsStateEnum.loading));
       List<ContactModel?> list = await repository.getContacts();
-      if(list.isEmpty) list = _DUMMYDATA;
-      list.sort((a, b){
-        if(a == null||b ==null)return 0;
+      if (list.isEmpty) {
+        list = _DUMMYDATA;
+        await repository.addContacts(list as List<ContactModel>);
+      }
+      list.sort((a, b) {
+        if (a == null || b == null) return 0;
         return a.firstName.compareTo(b.firstName);
       });
-      
+
       emit(state.copyWith(enumState: ContactsStateEnum.init, contacts: list));
     } catch (e) {
       debugPrint(e.toString());
@@ -49,8 +52,8 @@ class ContactsCubit extends Cubit<ContactsState> {
         case ContactsCubitActionEnum.create:
           await repository.addContacts([value!]);
           list = await repository.getContacts();
-          list.sort((a, b){
-            if(a == null||b ==null)return 0;
+          list.sort((a, b) {
+            if (a == null || b == null) return 0;
             return a.firstName.compareTo(b.firstName);
           });
           break;
@@ -86,7 +89,7 @@ class ContactsCubit extends Cubit<ContactsState> {
     emit(state.copyWith(searchResult: searchResult));
   }
 
-  List<ContactModel> _DUMMYDATA = [
+  final List<ContactModel> _DUMMYDATA = [
     ContactModel(
       firstName: 'Ivan',
       lastName: 'Velkov',
@@ -132,15 +135,49 @@ class ContactsCubit extends Cubit<ContactsState> {
       zipCode: '14000',
     ),
     ContactModel(
-      firstName: 'Ivan',
-      lastName: 'Velkov',
-      company: 'capyBUGa',
+      firstName: 'Jhon',
+      lastName: 'Doe',
+      company: '',
       phoneNumber: '0500551700',
       streetAddress1: 'example',
       streetAddress2: 'address',
       city: 'Odessa',
       state: 'Odessa',
       zipCode: '65000',
+    ),
+    ContactModel(
+      firstName: 'Apple',
+      lastName: 'Carrot',
+      company: '',
+      phoneNumber: '',
+      streetAddress1: '',
+      streetAddress2: '',
+      city: '',
+      state: '',
+      zipCode: '',
+    ),
+    ContactModel(
+      firstName: 'Apple',
+      lastName: 'Carrot',
+      company: '',
+      phoneNumber: '',
+      streetAddress1: '',
+      streetAddress2: '',
+      city: '',
+      state: '',
+      zipCode: '',
+    ),
+
+    ContactModel(
+      firstName: 'Name',
+      lastName: 'Surname',
+      company: '',
+      phoneNumber: '',
+      streetAddress1: '',
+      streetAddress2: '',
+      city: '',
+      state: '',
+      zipCode: '',
     ),
   ];
 }

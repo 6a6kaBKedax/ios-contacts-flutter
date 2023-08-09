@@ -9,7 +9,7 @@ class ContactsLocalDataSourceImpl implements ContactsLocalDataSource {
   @override
   Future<bool> addContacts(List<ContactModel> contacts) async {
     try {
-      await db.put(contacts);
+      await db.put<ContactModel>(contacts);
       return true;
     } catch (e) {
       debugPrint(e.toString());
@@ -20,7 +20,7 @@ class ContactsLocalDataSourceImpl implements ContactsLocalDataSource {
   @override
   Future<bool> deleteContacts(List<int> ids) async {
     try {
-      await db.remove(ids);
+      await db.remove<ContactModel>(ids);
       return true;
     } catch (e) {
       debugPrint(e.toString());
@@ -35,8 +35,8 @@ class ContactsLocalDataSourceImpl implements ContactsLocalDataSource {
 
   @override
   Future<ContactModel?> updateContact(ContactModel contactModel) async {
-    await db.remove([contactModel.idKey]);
-    await db.put([contactModel]);
+    await db.remove<ContactModel>([contactModel.idKey]);
+    await db.put<ContactModel>([contactModel]);
     return (await db.get<ContactModel>(ids: [contactModel.idKey])).first;
   }
 }

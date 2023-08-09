@@ -9,13 +9,7 @@ class ObjectBoxLocalDbSourceImp implements LocalDbDataSource {
 
   ObjectBoxLocalDbSourceImp(this.store);
 
-  //ObjectBoxLocalDbSourceImp._create(this.store);
-//
-  //static Future<ObjectBoxLocalDbSourceImp> create() async {
-  //  final docsDir = await getApplicationDocumentsDirectory();
-  //  final store = await openStore(directory: p.join(docsDir.path, "obx"));
-  //  return ObjectBoxLocalDbSourceImp._create(store);
-  //}
+
 
   static Future<Store> createNewStore() async {
     final docsDir = await getApplicationDocumentsDirectory();
