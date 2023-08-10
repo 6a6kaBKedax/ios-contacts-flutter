@@ -104,7 +104,11 @@ class _CreateUpdateContactScreenState extends State<CreateUpdateContactScreen> {
                           widget.contactModel != null ? ContactsCubitActionEnum.update : ContactsCubitActionEnum.create,
                       value: _getContact,
                     );
-                context.go(Routes.init);
+                if (widget.contactModel == null) {
+                  context.go(Routes.init);
+                } else {
+                  context.go(Routes.detail, extra: _getContact);
+                }
               },
               child: Text(
                 'Done',
@@ -137,6 +141,7 @@ class _CreateUpdateContactScreenState extends State<CreateUpdateContactScreen> {
                 ),
                 const SizedBox(height: 50.0),
                 DropTextFieldWidget(
+                  isOpen: widget.contactModel != null,
                   dropWidget: DropTextFieldChild(
                     controllers: [phoneController],
                     titleText: 'primary',
@@ -148,6 +153,7 @@ class _CreateUpdateContactScreenState extends State<CreateUpdateContactScreen> {
                 ),
                 const SizedBox(height: 50.0),
                 DropTextFieldWidget(
+                  isOpen: widget.contactModel != null,
                   dropWidget: DropTextFieldChild(
                     controllers: [
                       streetAddress1,
@@ -197,8 +203,8 @@ class _CreateUpdateContactScreenState extends State<CreateUpdateContactScreen> {
 
   ContactModel get _getContact => ContactModel(
         idKey: widget.contactModel?.idKey ?? 0,
-        firstName: nameController.value.text == '' ? 'empty name' : nameController.value.text,
-        lastName: lastNameController.value.text == '' ? 'empty last name' : lastNameController.value.text,
+        firstName: nameController.value.text == '' ? 'name' : nameController.value.text,
+        lastName: lastNameController.value.text == '' ? 'last' : lastNameController.value.text,
         company: companyController.value.text,
         phoneNumber: phoneController.value.text == '' ? '123456678' : phoneController.value.text,
         streetAddress1: streetAddress1.value.text,

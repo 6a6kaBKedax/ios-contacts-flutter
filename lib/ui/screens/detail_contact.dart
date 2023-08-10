@@ -53,7 +53,7 @@ class DetailContact extends StatelessWidget {
             padding: const EdgeInsets.all(12.0),
             child: GestureDetector(
               onTap: () async {
-                await url.launchUrl(Uri(path: 'tel://${model.phoneNumber}'));
+                await url.launchUrl(Uri(path: model.phoneNumber,scheme: 'tel'));
               },
               child: CupertinoContainer(
                 title: 'Phone',

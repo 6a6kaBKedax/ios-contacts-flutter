@@ -3,8 +3,8 @@ import 'package:contacts_app/ui/screens/models/contacts_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui_kit/ui_kit.dart';
 
-import 'package:core/core.dart';
 import 'package:go_router/go_router.dart';
 
 class ContactListScreen extends StatelessWidget {
@@ -47,11 +47,27 @@ class ContactListScreen extends StatelessWidget {
                 SliverList(
                   delegate: searchController.value.text.isEmpty
                       ? SliverChildBuilderDelegate(
-                          (BuildContext context, int index) => _CupertinoListItem(item: state.contacts[index]),
+                          (BuildContext context, int index) {
+                            final item = state.contacts[index];
+                            if (item == null) return const SizedBox();
+                            return CupertinoListItem(
+                              onTap: () => context.go(Routes.detail, extra: item),
+                              name: item.firstName,
+                              lastName: item.lastName,
+                            );
+                          },
                           childCount: state.contacts.length,
                         )
                       : SliverChildBuilderDelegate(
-                          (BuildContext context, int index) => _CupertinoListItem(item: state.searchResult[index]),
+                          (BuildContext context, int index)  {
+                            final item = state.searchResult[index];
+                            if (item == null) return const SizedBox();
+                            return CupertinoListItem(
+                              onTap: () => context.go(Routes.detail, extra: item),
+                              name: item.firstName,
+                              lastName: item.lastName,
+                            );
+                          },
                           childCount: state.searchResult.length,
                         ),
                 ),
@@ -63,31 +79,3 @@ class ContactListScreen extends StatelessWidget {
   }
 }
 
-class _CupertinoListItem extends StatelessWidget {
-  const _CupertinoListItem({required this.item});
-
-  final ContactModel? item;
-
-  @override
-  Widget build(BuildContext context) {
-    if (item == null) return const SizedBox();
-    return GestureDetector(
-      onTap: () => context.go(Routes.detail, extra: item),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(item!.firstName),
-                const SizedBox(width: 4.0),
-                Text(item!.lastName),
-              ],
-            ),
-            const Divider(),
-          ],
-        ),
-      ),
-    );
-  }
-}

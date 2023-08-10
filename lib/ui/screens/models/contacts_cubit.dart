@@ -52,10 +52,6 @@ class ContactsCubit extends Cubit<ContactsState> {
         case ContactsCubitActionEnum.create:
           await repository.addContacts([value!]);
           list = await repository.getContacts();
-          list.sort((a, b) {
-            if (a == null || b == null) return 0;
-            return a.firstName.compareTo(b.firstName);
-          });
           break;
         case ContactsCubitActionEnum.delete:
           await repository.deleteContacts(ids!);
@@ -69,6 +65,10 @@ class ContactsCubit extends Cubit<ContactsState> {
           list = await repository.getContacts();
           break;
       }
+      list.sort((a, b) {
+        if (a == null || b == null) return 0;
+        return a.firstName.compareTo(b.firstName);
+      });
       emit(
         state.copyWith(
           enumState: ContactsStateEnum.init,
@@ -167,7 +167,6 @@ class ContactsCubit extends Cubit<ContactsState> {
       state: '',
       zipCode: '',
     ),
-
     ContactModel(
       firstName: 'Name',
       lastName: 'Surname',
