@@ -1,13 +1,13 @@
+import 'package:equatable/equatable.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class ContactModel {
+class ContactModel extends Equatable {
   @Id()
   int idKey;
-  @Unique()
-  final String contactID;
   final String firstName;
   final String lastName;
+  final String company;
   final String phoneNumber;
   final String streetAddress1;
   final String streetAddress2;
@@ -16,10 +16,10 @@ class ContactModel {
   final String zipCode;
 
   ContactModel({
-    required this.idKey,
-    required this.contactID,
+    this.idKey = 0,
     required this.firstName,
     required this.lastName,
+    required this.company,
     required this.phoneNumber,
     required this.streetAddress1,
     required this.streetAddress2,
@@ -27,4 +27,18 @@ class ContactModel {
     required this.state,
     required this.zipCode,
   });
+
+  @override
+  List<Object?> get props => [
+        idKey,
+        firstName,
+        lastName,
+        company,
+        phoneNumber,
+        streetAddress1,
+        streetAddress2,
+        city,
+        state,
+        zipCode,
+      ];
 }
