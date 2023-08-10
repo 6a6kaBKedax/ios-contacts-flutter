@@ -19,7 +19,6 @@ final GoRouter router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         return ContactListScreen();
       },
-
     ),
     GoRoute(
       path: Routes.detail,

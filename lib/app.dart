@@ -2,7 +2,6 @@ import 'package:contacts_app/ui/di/navigation.dart';
 import 'package:core/core.dart';
 import 'package:contacts_app/ui/screens/models/contacts_cubit.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class App extends StatelessWidget {
